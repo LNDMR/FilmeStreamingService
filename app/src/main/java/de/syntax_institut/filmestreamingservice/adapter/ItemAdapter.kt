@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -24,6 +25,7 @@ class ItemAdapter(
      */
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val eineTextView: TextView  = itemView.findViewById(R.id.movieTitle_textView)
+        val liked_Button: ImageButton = itemView.findViewById(R.id.like_imageButton)
     }
 
     /**
@@ -45,13 +47,28 @@ class ItemAdapter(
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
 
         // Hole das movieTitle Objekt für die enthaltenen Informationen
-        val movieTitle = dataset[position]
+        var movieTitle = dataset[position]
 
         // Hole die TextView aus dem ViewHolder
         val text_View = holder.eineTextView
         // Setze den Text
         text_View.text = context.getString(movieTitle.stringResource)
+        changeImage(movieTitle.isLiked, holder.liked_Button)
 
+        holder.liked_Button.setOnClickListener {
+            movieTitle.isLiked = !movieTitle.isLiked
+            changeImage(movieTitle.isLiked, holder.liked_Button)
+        }
+
+    }
+
+    fun changeImage(yes: Boolean, button: ImageButton){
+        if(yes){
+            button.setImageResource(R.drawable.iv_like_liked)
+        } else {
+            button.setImageResource(R.drawable.iv_like)
+
+        }
     }
 
     /**
